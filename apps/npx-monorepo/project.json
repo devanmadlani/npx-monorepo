@@ -1,0 +1,76 @@
+{
+  "name": "npx-monorepo",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "npx-monorepo",
+  "sourceRoot": "apps/npx-monorepo/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/npx-monorepo",
+        "index": "apps/npx-monorepo/src/index.html",
+        "browser": "apps/npx-monorepo/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/npx-monorepo/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/npx-monorepo/src/favicon.ico",
+          "apps/npx-monorepo/src/assets"
+        ],
+        "styles": ["apps/npx-monorepo/src/styles.scss"],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "npx-monorepo:build:production"
+        },
+        "development": {
+          "buildTarget": "npx-monorepo:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "npx-monorepo:build"
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "npx-monorepo:build",
+        "staticFilePath": "dist/apps/npx-monorepo/browser"
+      }
+    }
+  }
+}
